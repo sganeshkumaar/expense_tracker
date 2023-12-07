@@ -1,0 +1,109 @@
+body {
+    height: 100vh;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 38fr 37fr 25fr;
+
+}
+
+#records-portion {
+    background-color: azure;
+    padding-left: 1.9rem;
+    padding-top: 3rem;
+    padding-right: 2rem;
+}
+
+#analytics-portion {
+    background-color: bisque;
+}
+
+#entry-portion {
+    background-color: cornsilk;
+}
+
+.summary-fields {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-between;
+}
+
+.summary-fields>div{
+    margin: 10px;
+    display: flex;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+  
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 0.5rem;
+}
+  
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.monthly-records .month-input-box {
+    display: flex;
+    justify-content: space-around;
+    height: 1.5rem;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.records-table .date-options {
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.records-table .date {
+    margin-left: .5rem;
+}
+
+.edit {
+    height:1rem;
+    margin-right: .23rem;
+}
+
+.delete {
+    height:1.2rem
+}
+
+.entry-heading {
+    text-align: center;
+    margin-top:4rem;
+}
+
+.entry-box {
+    margin: 1rem auto;
+    height:70%;
+    width:85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.entry-type-input {
+    display: flex;
+    justify-content: space-around;
+}
+
+.entry-box>div:not(.entry-type-input) {
+    display: flex;
+    justify-content: space-between;
+}
+
+.entry-box>div:not(.entry-type-input) input{
+    width:9rem;
+}
+
+#add-entry-button {
+    justify-content: center;
+}
+

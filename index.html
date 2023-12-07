@@ -7,9 +7,113 @@
     <title>Expense Tracker</title>
 </head>
 <body>
-    <div id="records-portion"></div>
+    <div id="records-portion">
+        <div class="summary-container">
+            <div class="summary-heading">
+                <b>Month Summary:</b>
+            </div>
+            <br>
+            <div class="summary-fields">
+                <div class="income-box">
+                    <div>Income: Rs&nbsp;</div>
+                    <div class="income-value">666666</div>
+                </div>
+                <div class="expense-box">
+                    <div>Expense: Rs&nbsp;</div>
+                    <div class="expense-value">666666</div>
+                </div>
+                <div class="month-tally-box">
+                    <div>Monthly Tally: Rs&nbsp;</div>
+                    <div class="tally-value">666666</div>
+                </div>
+                <div class="balance-box">
+                    <div>Total Balance: Rs&nbsp;</div>
+                    <div class="balance-value">666666</div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="monthly-records">
+            <div class="records-heading">
+                <b>Monthly Records</b>
+            </div>
+            <br>
+            <div class="month-input-box">
+                <img src="./assets/scrollArrowLeft.svg" alt="" id="left-arrow">
+                <input type="month" name="month-input" id="month-input" value="2023-12" min="2023-02" max="2030-12">
+                <img src="./assets/scrollArrowRight.svg" alt="" id="right-arrow">
+            </div>
+            <br>
+            <table class="records-table">
+                <tr>
+                  <th>Date</th>
+                  <th>Category</th>
+                  <th>Amount</th>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="date-options">
+                        <img src="./assets/edit.png" alt=""  class="edit">
+                        <img src="./assets/delete.svg" alt="" class="delete">
+                        <div class="date">23/4/23</div>
+                    </div>
+                  </td>
+                  <td>Food</td>
+                  <td>RS 5000</td>
+                </tr>
+                <tr>
+                    <td>
+                      <div class="date-options">
+                          <img src="./assets/edit.png" alt=""  class="edit">
+                          <img src="./assets/delete.svg" alt="" class="delete">
+                          <div class="date">23/4/23</div>
+                      </div>
+                    </td>
+                    <td>Food</td>
+                    <td>RS 5000</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
     <div id="analytics-portion"></div>
-    <div id="entry-portion"></div>
+    <div id="entry-portion">
+        <div class="entry-heading">
+            <h2>DATA ENTRY</h2>
+        </div>
+        <div class="entry-box">
+            <div class="entry-type-input">
+                <div class="income-radio">
+                    <input type="radio" name="entry-type" id="income-option">
+                    <label for="income-option"> Income</label>
+                </div>
+                <div class="expense-radio">
+                    <input type="radio" name="entry-type" id="expense-option">
+                    <label for="expense-option">Expense</label>
+                </div>
+            </div>
+            <div class="category-input-box">
+                <label for="category-input">Category:</label>
+                <input list="categories" name="categories" id="category-input" spellcheck="false" value="others">
+                <datalist id="categories">
+                    <option value="food"></option>
+                    <option value="food"></option>
+                    <option value="others"></option>
+                </datalist>
+            </div>
+            <div class="amount-input-box">
+                <label for="amount-input">Amount:</label>
+                <input type="number" name="" id="amount-input" min="1" max="1000000000">
+            </div>
+            <div class="date-input-box">
+                <label for="date-input">Date:</label>
+                <input type="date" name="" id="date-input">
+            </div>
+            <div id="add-entry-button">
+                <input type="button" value="add entry">
+            </div>
+        </div>
+    </div>
     <script src="./index.js"></script>
 </body>
 </html>
