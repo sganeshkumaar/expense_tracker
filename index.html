@@ -50,28 +50,6 @@
                   <th>Category</th>
                   <th>Amount</th>
                 </tr>
-                <tr>
-                  <td>
-                    <div class="date-options">
-                        <img src="./assets/edit.png" alt=""  class="edit">
-                        <img src="./assets/delete.svg" alt="" class="delete">
-                        <div class="date">23/4/23</div>
-                    </div>
-                  </td>
-                  <td>Food</td>
-                  <td>RS 5000</td>
-                </tr>
-                <tr>
-                    <td>
-                      <div class="date-options">
-                          <img src="./assets/edit.png" alt=""  class="edit">
-                          <img src="./assets/delete.svg" alt="" class="delete">
-                          <div class="date">23/4/23</div>
-                      </div>
-                    </td>
-                    <td>Food</td>
-                    <td>RS 5000</td>
-                </tr>
             </table>
         </div>
     </div>
@@ -84,21 +62,18 @@
         <div class="entry-box">
             <div class="entry-type-input">
                 <div class="income-radio">
-                    <input type="radio" name="entry-type" id="income-option">
+                    <input type="radio" name="entry-type" id="income-option" checked value="in">
                     <label for="income-option"> Income</label>
                 </div>
                 <div class="expense-radio">
-                    <input type="radio" name="entry-type" id="expense-option">
+                    <input type="radio" name="entry-type" id="expense-option" value="ex">
                     <label for="expense-option">Expense</label>
                 </div>
             </div>
             <div class="category-input-box">
                 <label for="category-input">Category:</label>
-                <input list="categories" name="categories" id="category-input" spellcheck="false" value="others">
+                <input list="categories" name="categories" id="category-input" spellcheck="false" value="">
                 <datalist id="categories">
-                    <option value="food"></option>
-                    <option value="food"></option>
-                    <option value="others"></option>
                 </datalist>
             </div>
             <div class="amount-input-box">

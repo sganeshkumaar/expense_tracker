@@ -1,5 +1,16 @@
 const monthEleInRecord = document.querySelector('#records-portion #month-input')
 const table = document.querySelector('.records-table')
+const datalist = document.querySelector('#categories')
+const addEntry = document.querySelector('#add-entry-button input')
+
+const expenseCategories = ["Food","Rent","Petrol","Gadgets","Groceries","others"]
+const incomeCategories = ["Salary","Free Lancing","interest","Rental","Profits","others"]
+
+let categoryInput,amountInput,dateInput
+
+
+summaryInputChange()
+optionsFill(incomeCategories)
 
 monthEleInRecord.addEventListener('change',summaryInputChange)
 
@@ -19,9 +30,14 @@ async function summaryInputChange (){
 }
 
 function displayTable(monthData) {
-    for ( let id in monthData) {
-        table.innerHTML+= `<tr>
-        <td id='${id}' class>
+    table.innerHTML = `<tr>
+    <th>Date</th>
+    <th>Category</th>
+    <th>Amount</th>
+    </tr>`
+    for (let id in monthData) {
+        table.innerHTML+= `<tr id='${id}' class='${monthData[id]["entry-type"]}'>
+        <td >
           <div class="date-options">
               <img src="./assets/edit.png" alt=""  class="edit">
               <img src="./assets/delete.svg" alt="" class="delete">
@@ -80,4 +96,46 @@ function yearMonthSplit(yearMonthText) {
     year = parseInt(year)
     month = parseInt(month)
     return [year,month]
+}
+
+
+const radioIncome = document.querySelector('#income-option')
+const radioExpense = document.querySelector('#expense-option')
+
+
+radioIncome.addEventListener('click',changeOnRadioClick)
+radioExpense.addEventListener('click',changeOnRadioClick)
+
+function changeOnRadioClick() {
+    if (radioIncome.checked) {
+        optionsFill(incomeCategories)
+    } else if(radioExpense.checked) {
+        optionsFill(expenseCategories)
+    }
+}
+
+function optionsFill(options) {
+    datalist.innerHTML = ''
+    for (let category of options) {
+        datalist.innerHTML += `<option value="${category}"></option>`
+    }
+}
+
+addEntry.addEventListener('click',processEntry)
+
+categoryInput =document.querySelector('#category-input')
+amountInput =document.querySelector('#amount-input')
+dateInput =document.querySelector('#date-input')
+
+function processEntry() {
+    if(!(categoryInput.value && amountInput.value && dateInput.value)) {
+        alert('fill all fields')
+        return
+    }
+    let entryType = radioExpense.checked ? radioExpense.value : radioIncome.value
+    alert(entryType)
+
+    let amount = amountInput.value
+    let category = categoryInput.value
+    let date = dateInput.value
 }

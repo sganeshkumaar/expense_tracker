@@ -44,7 +44,7 @@ td, th {
     padding: 0.5rem;
 }
   
-tr:nth-child(even) {
+tbody:nth-child(odd) {
     background-color: #dddddd;
 }
 
@@ -60,10 +60,15 @@ tr:nth-child(even) {
     display:flex;
     justify-content: flex-start;
     align-items: center;
+    width:fit-content;
 }
 
 .records-table .date {
     margin-left: .5rem;
+}
+
+.ex td:nth-child(3) {
+    color: red;
 }
 
 .edit {
