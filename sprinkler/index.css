@@ -1,0 +1,104 @@
+body {
+    height:100vh;
+    width: 98.5vw;
+    margin:0;
+    padding: 0;
+    background-color:rgb(202, 233, 222);
+    padding-top: 1.5rem;
+
+}
+
+.panels {
+    height:80%;
+    width: 85%;
+    margin:auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.6fr 1fr ;
+    grid-row-gap: 1rem;
+    grid-column-gap: 1rem;
+}
+
+.panels>div {
+    background-color:rgb(162, 206, 191) ;
+    border: solid 2px;
+}
+
+
+.selector-option {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.run-mode-check {
+    display: flex;
+    flex-direction: column;
+}
+
+#check-box {
+    height: 1.5rem;
+}
+
+.zones-radio {
+    background-color:rgb(130, 188, 169)  ;
+    height:5rem;
+    width: 50%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+}
+
+.zone-con-setting {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.order-number {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
+
+.indicators {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
+
+.timer-box {
+    text-align: center;
+    margin: auto;
+    display: flex;
+    height:40%;
+    width:40%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(73, 120, 104);
+}
+
+.time-output {
+    font-size: 3rem;
+}
+
+.ind div {
+    height:1rem;
+    width:7rem;
+    background-color: rgb(202, 233, 222);
+    text-align: center;
+    padding: 2rem;
+    border-radius: 10%;
+}
+
+.led div {
+    background-color: red;
+}
+
+.bottom-section {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: space-around;
+}
+
