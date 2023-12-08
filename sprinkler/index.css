@@ -86,7 +86,7 @@ body {
 .ind div {
     height:1rem;
     width:7rem;
-    background-color: rgb(202, 233, 222);
+    background-color:rgb(202, 233, 222) ;
     text-align: center;
     padding: 2rem;
     border-radius: 10%;

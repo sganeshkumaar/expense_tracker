@@ -135,13 +135,13 @@ function timeRunner(zone) {
 
 function ledOn(zone) {
     if(zone === 'front') {
-        frontLed.style.backgroundColor ='red'
+        frontLed.style.backgroundColor ='rgb(137, 183, 167)'
     } else if(zone === 'back') {
-        backLed.style.backgroundColor ='red'
+        backLed.style.backgroundColor ='rgb(137, 183, 167)'
     } else if(zone === 'left') {
-        leftLed.style.backgroundColor ='red'
+        leftLed.style.backgroundColor ='rgb(137, 183, 167)'
     } else if(zone === 'right') {
-        rightLed.style.backgroundColor ='red'
+        rightLed.style.backgroundColor ='rgb(137, 183, 167)'
     }
 }
 
