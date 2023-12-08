@@ -172,6 +172,9 @@ function timeDec() {
 document.querySelector('#reset-button').addEventListener('click',reset)
 
 function reset() {
+    if(checkbox.checked) {
+        return
+    }
     restore()
     frontInput.checked= true
     timeInput.value = 1
