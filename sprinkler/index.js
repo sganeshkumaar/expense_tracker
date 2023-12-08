@@ -8,8 +8,14 @@ const backLed = document.querySelector('#back-led')
 const leftLed = document.querySelector('#left-led')
 const rightLed = document.querySelector('#right-led')
 
+const zones = ['front','back','left','right']
+
 let timeRemaining = 0
 let timerId
+
+let power = 1
+
+const timeOutput = document.querySelector('.time-output')
 
 const timeInput = document.querySelector('#zone-time-input')
 const orderInput = document.querySelector('.order-setting input')
@@ -63,6 +69,7 @@ checkbox.addEventListener('click',actionOnCheckBoxClick)
 function actionOnCheckBoxClick() {
 
     if(this.checked === false) {
+        halt()
         return
     }
     let orders = Object.values(zoneOrder)
@@ -95,13 +102,23 @@ function restore() {
 
 
 async function process() {
-    for(let i=1;i<=4;i++) {
-        for(let zone in zoneOrder) {
-            if(zoneOrder[zone]===i) {
-                ledOn(zone)
-                timeRunner(zone)
-                await sleep(zoneTime[zone]*1000)
-                ledOff(zone)
+    while(checkbox.checked != false && power===1)
+    {
+        for(let i=1;i<=4;i++) {
+            for(let zone in zoneOrder) {
+                if(zoneOrder[zone]===i) {
+                    if(checkbox.checked === false && power===0) {
+                        break
+                    }
+                    ledOn(zone)
+                    timeRunner(zone)
+                    await sleep(zoneTime[zone]*1000)
+                    await sleep(1000)
+                    ledOff(zone)
+                    break
+                }
+            }
+            if(checkbox.checked === false && power===0) {
                 break
             }
         }
@@ -112,6 +129,7 @@ async function process() {
 
 function timeRunner(zone) {
     timeRemaining = zoneTime[zone]
+    timeDec()
     timerId = setInterval(timeDec,1000)
 }
 
@@ -139,4 +157,49 @@ function ledOff(zone) {
     }
 }
 
+function timeDec() {
 
+    timeOutput.innerText = `00:${timeRemaining.toString().padStart(2,'0')}`
+    if(timeRemaining === 0)
+    {
+        clearInterval(timerId)
+        return
+    }
+    timeRemaining -= 1
+
+}
+
+document.querySelector('#reset-button').addEventListener('click',reset)
+
+function reset() {
+    restore()
+    frontInput.checked= true
+    timeInput.value = 1
+    orderInput.value =1
+}
+
+function halt() {
+    clearInterval(timerId)
+    timeOutput.innerText = '00:00'
+    for(let zone of zones) {
+        ledOff(zone)
+    }
+
+}
+
+let offButton = document.querySelector('#off-button')
+
+offButton.addEventListener('click',offOn)
+
+function offOn() {
+    if( offButton.value === 'OFF') {
+        power = 0
+        offButton.value = 'On'
+        halt()
+        reset()
+        checkbox.checked = false
+    } else if( offButton.value === 'On') {
+        power = 1
+        offButton.value = 'OFF'
+    }
+}
