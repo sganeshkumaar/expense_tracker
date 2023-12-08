@@ -1,13 +1,1 @@
-{
-    "2023" : {
-        "12" : {
-            "2002" : {
-                "amount" : 23,
-                "date" : "7/12/2023",
-                "category" : "Food",
-                "entry-type" : "ex",
-                "id" : "2002"
-            }
-        }
-    }
-}
+{"2023":{"12":{"2002":{"amount":23,"date":"7/12/2023","category":"Food","entryType":"ex","id":"2002"},"e4680a69-7b12-4cdf-b75d-670af550fd2b":{"amount":25000,"category":"Salary","date":"2023-12-08","entryType":"in","id":"e4680a69-7b12-4cdf-b75d-670af550fd2b"}}}}

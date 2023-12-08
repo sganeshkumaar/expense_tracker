@@ -71,6 +71,10 @@ tbody:nth-child(odd) {
     color: red;
 }
 
+.in td:nth-child(3) {
+    color: green;
+}
+
 .edit {
     height:1rem;
     margin-right: .23rem;

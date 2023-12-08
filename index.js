@@ -36,7 +36,7 @@ function displayTable(monthData) {
     <th>Amount</th>
     </tr>`
     for (let id in monthData) {
-        table.innerHTML+= `<tr id='${id}' class='${monthData[id]["entry-type"]}'>
+        table.innerHTML+= `<tr id='${id}' class='${monthData[id].entryType}'>
         <td >
           <div class="date-options">
               <img src="./assets/edit.png" alt=""  class="edit">
@@ -127,7 +127,7 @@ categoryInput =document.querySelector('#category-input')
 amountInput =document.querySelector('#amount-input')
 dateInput =document.querySelector('#date-input')
 
-function processEntry() {
+async function processEntry() {
     if(!(categoryInput.value && amountInput.value && dateInput.value)) {
         alert('fill all fields')
         return
@@ -135,7 +135,20 @@ function processEntry() {
     let entryType = radioExpense.checked ? radioExpense.value : radioIncome.value
     alert(entryType)
 
-    let amount = amountInput.value
-    let category = categoryInput.value
-    let date = dateInput.value
+    let reqBody = {}
+    reqBody.amount = parseInt(amountInput.value)
+    reqBody.category = categoryInput.value
+    reqBody.date = dateInput.value
+    reqBody.entryType = entryType
+    
+
+    let uid = await fetch('/add-entry', {
+        method: 'post',
+        headers: {
+            "content-type":'application/json'
+        },
+        body : JSON.stringify(reqBody)
+    }).then((res)=> res.json())
+
+    console.log(uid)
 }
