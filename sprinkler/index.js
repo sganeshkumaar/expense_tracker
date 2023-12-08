@@ -107,8 +107,9 @@ async function process() {
         for(let i=1;i<=4;i++) {
             for(let zone in zoneOrder) {
                 if(zoneOrder[zone]===i) {
-                    if(checkbox.checked === false && power===0) {
-                        break
+                    if(checkbox.checked === false || power===0) {
+                        clearInterval(timerId)
+                        return
                     }
                     ledOn(zone)
                     timeRunner(zone)
@@ -118,8 +119,8 @@ async function process() {
                     break
                 }
             }
-            if(checkbox.checked === false && power===0) {
-                break
+            if(checkbox.checked === false || power===0) {
+                return
             }
         }
     }
@@ -196,11 +197,11 @@ offButton.addEventListener('click',offOn)
 
 function offOn() {
     if( offButton.value === 'OFF') {
+        checkbox.checked = false
         power = 0
         offButton.value = 'On'
         halt()
         reset()
-        checkbox.checked = false
     } else if( offButton.value === 'On') {
         power = 1
         offButton.value = 'OFF'
