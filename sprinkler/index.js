@@ -25,7 +25,11 @@ const sleep = (delay) => new Promise((resolve) => setTimeout(resolve,delay))
 timeInput.addEventListener('change',timeChange)
 
 function timeChange() {
-    if(timeInput.value < 1) {
+    if(checkbox.checked === true || power === 0) {
+        timeInput.value=1
+        return
+    }
+    if(timeInput.value < 1 ) {
         timeInput.value = 1 
     }
     if(this.value > 15) {
@@ -39,9 +43,20 @@ backInput.addEventListener('click',radioClick)
 leftInput.addEventListener('click',radioClick)
 rightInput.addEventListener('click',radioClick)
 
+orderInput.addEventListener('click',rangeClick) 
 
+function rangeClick() {
+    if(checkbox.checked === true || power === 0) {
+        orderInput.value = 1
+    }
+}
 
 function radioClick() {
+    if(checkbox.checked === true || power === 0) {
+        frontInput.checked = true
+        frontInput.checked = false
+        return
+    }
     let zone = this.value
     zoneOrder[zone] = parseInt(orderInput.value)
     zoneTime[zone] = parseInt(timeInput.value)
@@ -64,9 +79,15 @@ const zoneTime = {
 }
 
 
+
+
 checkbox.addEventListener('click',actionOnCheckBoxClick)
 
 function actionOnCheckBoxClick() {
+    if (power === 0) {
+        checkbox.checked = false
+        return
+    }
 
     if(this.checked === false) {
         halt()
@@ -76,7 +97,7 @@ function actionOnCheckBoxClick() {
     orders.sort()
     for(let i=0;i<3;i++){
         if(orders[i]===orders[i+1]) {
-            alert('Please enter different orders for different different zones')
+            alert('Please enter different orders for different different zones and values are restored')
             checkbox.checked=false
             restore()
             frontInput.checked = true
@@ -180,6 +201,7 @@ function reset() {
     frontInput.checked= true
     timeInput.value = 1
     orderInput.value =1
+    alert('settings are restored to default')
 }
 
 function halt() {
