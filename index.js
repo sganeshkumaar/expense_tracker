@@ -139,5 +139,3 @@ function processEntry() {
     let category = categoryInput.value
     let date = dateInput.value
 }
-
-console.log('start')
