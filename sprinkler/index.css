@@ -92,7 +92,7 @@ body {
     border-radius: 10%;
 }
 
-.led div {
+.led {
     background-color: red;
 }
 

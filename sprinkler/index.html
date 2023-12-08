@@ -21,10 +21,10 @@
                     <div class="back">Back</div>
                     <div></div>
                     <div class="left">Left</div>
-                    <div class="front-radio"><input type="radio" name="" id="front-radio"></div>
-                    <div class="back-radio"><input type="radio" name="" id="back-radio"></div>
-                    <div class="right-radio"><input type="radio" name="" id="right-radio"></div>
-                    <div class="left-radio"><input type="radio" name="" id="left-radio"></div>
+                    <div class="front-radio"><input type="radio" name="radios" id="front-radio" value="front"></div>
+                    <div class="back-radio"><input type="radio" name="radios" id="back-radio" value="back"></div>
+                    <div class="right-radio"><input type="radio" name="radios" id="right-radio" value="right"></div>
+                    <div class="left-radio"><input type="radio" name="radios" id="left-radio" value="left"></div>
                     <div class="front">Front</div>
                     <div></div>
                     <div class="right">Right</div>
@@ -37,8 +37,8 @@
             <div class="zone-con-setting">
                 <div class="order-setting">
                     <div class="order-setting-head" style="text-align: center;margin-bottom: 0.5rem;"><b>Zone Order</b></div>
-                    <div class="order-setting-input">
-                        <input type="range" name="" id="" min="1" max="4" value="1">
+                    <div>
+                        <input type="range" name="" id="" min="1" max="4" value="1" id="order-setting-input">
                     </div>
                     <div class="order-number">
                         <div>|</div>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="time-setting">
                     <div class="time-setting-head" style="text-align: center;margin-bottom: 1rem;"><b>Zone Time (sec)</b></div>
-                    <input type="number" name="" id="zone-time-input" value="0">
+                    <input type="number" name="" id="zone-time-input" value="1" min="1" max="15">
                 </div>
             </div>
         </div>
@@ -62,14 +62,14 @@
             <div class="indicators">
                 <div></div>
                 <div class="front-indicator ind">
-                    <div >Front</div>
+                    <div id="front-led">Front</div>
                 </div>
                 <div></div>
-                <div class="left-indicator ind led"><div >Left</div></div>
+                <div class="left-indicator ind"><div id="left-led">Left</div></div>
                 <div></div>
-                <div class="right-indicator ind"><div>Right</div></div>
+                <div class="right-indicator ind"><div id="right-led">Right</div></div>
                 <div></div>
-                <div class="back-indicator ind"><div >Back</div></div>
+                <div class="back-indicator ind"><div id="back-led">Back</div></div>
                 <div></div>
             </div>
         </div>
