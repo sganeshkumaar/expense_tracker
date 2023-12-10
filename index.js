@@ -35,19 +35,87 @@ function displayTable(monthData) {
     <th>Category</th>
     <th>Amount</th>
     </tr>`
-    for (let id in monthData) {
+
+    let ids = Object.keys(monthData).sort((a,b) => {
+        let date1 = new Date(monthData[a].date)
+        let date2 = new Date(monthData[b].date)
+        if(date1 > date2) {
+            return 1
+        } else if(date1 < date2) {
+            return -1
+        } else {
+            return 0
+        }
+    })
+    for (let id of ids) {
+        let date = monthData[id].date.split('-')
         table.innerHTML+= `<tr id='${id}' class='${monthData[id].entryType}'>
         <td >
           <div class="date-options">
               <img src="./assets/edit.png" alt=""  class="edit">
               <img src="./assets/delete.svg" alt="" class="delete">
-              <div class="date">${monthData[id].date}</div>
+              <div class="date">${date[2]}-${date[1]}-${date[0]}</div>
           </div>
         </td>
         <td>${monthData[id].category}</td>
         <td>RS ${monthData[id].amount}</td>
       </tr>`
     }
+    // editButtonListeners()
+    deleteButtonListeners()
+}
+
+// function editButtonListeners() {
+//     let editButtons = document.querySelectorAll('.edit')
+//     editButtons.forEach((button) => {
+//         button.addEventListener('click',editClick)
+//     });
+// }
+
+// async function editClick() {
+//     let udi = this.parentNode.parentNode.parentNode.id
+//     let body = {
+//         id: udi
+//     }
+
+//     let ack = await fetch('/edit', {
+//         method: 'post',
+//         headers: {
+//             "content-type":'application/json'
+//         },
+//         body : JSON.stringify(body)
+//     }).then((res)=> res.json())
+
+//     console.log(ack)
+// }
+
+async  function deleteButtonListeners() {
+    let deleteButtons = document.querySelectorAll('.delete')
+    deleteButtons.forEach((button) => {
+        button.addEventListener('click',deleteClick)
+    });
+}
+
+async function deleteClick() {
+    let udi = this.parentNode.parentNode.parentNode.id
+
+    let date = this.parentNode.querySelector('.date').innerText.split('-')
+    let body = {
+        id: udi,
+        month: date[1],
+        year: date[2]
+    }
+
+    let ack = await fetch('/delete', {
+        method: 'post',
+        headers: {
+            "content-type":'application/json'
+        },
+        body : JSON.stringify(body)
+    }).then((res)=> res.json())
+
+    console.log(ack)
+    summaryInputChange()
 }
 
 function leftArrow() {
@@ -150,5 +218,5 @@ async function processEntry() {
         body : JSON.stringify(reqBody)
     }).then((res)=> res.json())
 
-    console.log(uid)
+    summaryInputChange()
 }

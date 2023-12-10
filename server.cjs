@@ -31,7 +31,15 @@ app.post('/add-entry',(req,res)=> {
 
     let id = uuidv4()
     fields.id = id
-    dataBase[year][month][id] = fields
+    if(dataBase[year]) {
+        if(dataBase[year][month]) {
+            dataBase[year][month][id] = fields
+        } else {
+            dataBase[year][month] = {id:fields}
+        }
+    } else {
+        dataBase[year] = {}
+    }
     console.log(dataBase)
     fs.writeFileSync('./data.json',JSON.stringify(dataBase),(err) => {
         if(err){
@@ -42,5 +50,19 @@ app.post('/add-entry',(req,res)=> {
     })
     res.status(200).json({id: id})
 })
+
+app.post('/delete',(req,res)=> {
+    let reqBody = req.body
+    delete dataBase[reqBody.year][reqBody.month][reqBody.id]
+    fs.writeFileSync('./data.json',JSON.stringify(dataBase),(err) => {
+        if(err){
+            console.log(err)
+            return
+        }
+    })
+    res.status(200).json({message : "successful"})
+})
+
+
 
 app.listen(port,() => console.log(`server running in ${port}`))
