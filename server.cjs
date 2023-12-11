@@ -19,6 +19,7 @@ app.get('/get-month',(req,res) => {
             body = dataBase[query.year][query.month]
         }
     }
+    body.
     console.log(body)
     res.status(200).json(body)
 })
@@ -31,16 +32,40 @@ app.post('/add-entry',(req,res)=> {
 
     let id = uuidv4()
     fields.id = id
+
     if(dataBase[year]) {
         if(dataBase[year][month]) {
             dataBase[year][month][id] = fields
         } else {
-            dataBase[year][month] = {id:fields}
+            dataBase[year][month] = {}
+            dataBase[year][month][id] = fields
         }
     } else {
         dataBase[year] = {}
+        dataBase[year][month] = {}
+        dataBase[year][month][id] = fields
     }
+
+    if (fields.entryType === 'ex') {
+        if(dataBase[year][month]["ex"]) {
+            dataBase[year][month]["ex"] = dataBase[year][month]["ex"] + fields.amount 
+        } else {
+            dataBase[year][month]["ex"] = fields.amount
+        }
+        dataBase["ex"] = dataBase["ex"] + fields.amount
+    }
+
+    if (fields.entryType === 'in') {
+        if(dataBase[year][month]["in"]) {
+            dataBase[year][month]["in"] = dataBase[year][month]["in"] + fields.amount 
+        } else {
+            dataBase[year][month]["in"] = fields.amount
+        }
+        dataBase["in"] = dataBase["in"] + fields.amount
+    }
+
     console.log(dataBase)
+
     fs.writeFileSync('./data.json',JSON.stringify(dataBase),(err) => {
         if(err){
             console.log(err)

@@ -25,7 +25,7 @@ async function summaryInputChange (){
         return
     }
     
-    let monthData = await fetch(`/get-month?year=${year}&month=${month}`).then((res)=> res.json())
+    let monthSummary = await fetch(`/get-month?year=${year}&month=${month}`).then((res)=> res.json())
     displayTable(monthData)
 }
 
@@ -36,18 +36,43 @@ function displayTable(monthData) {
     <th>Amount</th>
     </tr>`
 
-    let ids = Object.keys(monthData).sort((a,b) => {
+    let ids = Object.keys(monthData).filter((id) => {
+        return (id != "ex" && id != "in")
+    })
+    console.log(ids)
+    ids = ids.sort((a,b) => {
+
+        if(monthData[a].date === monthData[b].date) {
+            console.log('same date')
+            if(monthData[a].entryType === monthData[b].entryType) {
+                if(monthData[a].amount < monthData[b].amount) {
+                    return -1
+                } else {
+                    return 1
+                }
+            } else {
+                if(monthData[a].entryType === "in" && monthData[b].entryType === "ex") {
+                    return -1
+                } else {
+                    return 1
+                }
+            }
+        }
+        console.log(a,monthData[a].date,b,monthData[b].date)
         let date1 = new Date(monthData[a].date)
         let date2 = new Date(monthData[b].date)
+
         if(date1 > date2) {
             return 1
         } else if(date1 < date2) {
             return -1
-        } else {
-            return 0
         }
+        return 0
     })
     for (let id of ids) {
+        if(id === "ex" || id === "in") {
+            continue
+        }
         let date = monthData[id].date.split('-')
         table.innerHTML+= `<tr id='${id}' class='${monthData[id].entryType}'>
         <td >
