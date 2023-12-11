@@ -337,3 +337,29 @@ function yearMonthSplit(yearMonthText) {
     return [year,month]
 }
 
+document.querySelector('#get-button').addEventListener('click', requestAnalytics)
+
+async function requestAnalytics() {
+    let fromMonth = document.querySelector('#from-month').value
+    let toMonth = document.querySelector('#to-month').value
+    if (fromMonth > toMonth) {
+        alert('give appropriate from and to months')
+        return
+    } 
+    
+    let reqBody = {}
+
+    reqBody.fromMonth = fromMonth
+    reqBody.toMonth = toMonth
+
+    let ack = await fetch('/analysis', {
+        method: 'post',
+        headers: {
+            "content-type":'application/json'
+        },
+        body : JSON.stringify(reqBody)
+    }).then((res)=> res.json())
+
+    console.log(ack)
+}
+

@@ -190,3 +190,15 @@ tr td:nth-of-type(2) {
     max-height:21rem;
     overflow-y: scroll;
 }
+
+.expense-metrics {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.expense-metrics > div {
+    width: fit-content;
+    margin-left: .8rem;
+    justify-content: space-between;
+    margin-bottom: .5rem;
+}
