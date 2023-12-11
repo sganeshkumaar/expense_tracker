@@ -27,7 +27,7 @@
                     <div class="tally-value"></div>
                 </div>
                 <div class="balance-box">
-                    <div>Total Balance: Rs.&nbsp;</div>
+                    <div>Balance: Rs.&nbsp;</div>
                     <div class="balance-value"></div>
                 </div>
             </div>
@@ -40,21 +40,89 @@
             <br>
             <div class="month-input-box">
                 <img src="./assets/scrollArrowLeft.svg" alt="" id="left-arrow">
-                <input type="month" name="month-input" id="month-input" value="2023-12" min="2023-02" max="2030-12">
+                <input type="month" name="month-input" id="month-input" value="2023-12"  max="2030-12">
                 <img src="./assets/scrollArrowRight.svg" alt="" id="right-arrow">
             </div>
             <br>
-            <table class="records-table">
-                <tr>
-                  <th>Date</th>
-                  <th>Category</th>
-                  <th>Amount</th>
-                </tr>
-            </table>
+            <div class="table-box">
+                <table class="records-table">
+                    <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 
-    <div id="analytics-portion"></div>
+    <div id="analytics-portion">
+        <div style="text-align: center;margin-top: 1rem;"><h2>ANALYTICS</h2></div>
+        <div class="input-section">
+            <input type="month" id="from-month" value="2023-12" max="2030-12">
+            <input type="month" id="to-month" value="2023-12" max="2030-12">
+            <div class="get-analytics"><button type="button" id="get-button">GET</button></div>
+        </div>
+        <div class="analysis">
+            <div><h3>General metrics</h3></div>
+            <div class="general-metric">
+                <div class="income-metric">
+                    <div>Income: Rs.&nbsp;</div>
+                    <div class="ana-income-value">88888</div>
+                </div>
+                <div class="expense-metric">
+                    <div>Expense: Rs.&nbsp;</div>
+                    <div class="ana-expense-value">88888</div>
+                </div>
+                <div class="tally-metrix">
+                    <div>Monthly Tally: Rs.&nbsp;</div>
+                    <div class="ana-tally-value">88888</div>
+                </div>
+            </div>
+            <h3>INCOMES</h3>
+            <div class="income-metrics">
+                <div>
+                    Salary:Rs.<span class="salary">25006</span> ( <span class="salary-per">35</span>% )
+                </div>
+                <div>
+                    Free lancing:Rs.<span class="free-lancing">25000</span> ( <span class="free-lancing-per">35</span>% )
+                </div>
+                <div>
+                    Interest:Rs.<span class="interest">25000</span> ( <span class="interest-per">35</span>% )
+                </div>
+                <div>
+                    Rental:Rs.<span class="rental">25000</span> ( <span class="rental-per">35</span>% )
+                </div>
+                <div>
+                    Profits:Rs.<span class="profits">25000</span> ( <span class="profit-per">35</span>% )
+                </div>
+                <div>
+                    Others:Rs.<span class="others">25000</span> ( <span class="others-per">35</span>% )
+                </div>
+            </div>
+            <h3>Expenses</h3>
+            <div class="expense-metrics">
+                <div>
+                    Food:Rs.<span class="food">25006</span> ( <span class="food-per">35</span>% )
+                </div>
+                <div>
+                    Rent:Rs.<span class="rent">25000</span> ( <span class="rent-per">35</span>% )
+                </div>
+                <div>
+                    Petrol:Rs.<span class="petrol">25000</span> ( <span class="petrol-per">35</span>% )
+                </div>
+                <div>
+                    Gadgets:Rs.<span class="gadgets">25000</span> ( <span class="gadgets-per">35</span>% )
+                </div>
+                <div>
+                    Groceries:Rs.<span class="groceries">25000</span> ( <span class="groceries-per">35</span>% )
+                </div>
+                <div>
+                    Others:Rs.<span class="others">25000</span> ( <span class="others-per">35</span>% )
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="entry-portion">
         <div class="entry-heading">
             <h2>DATA ENTRY</h2>

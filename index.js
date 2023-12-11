@@ -1,7 +1,7 @@
 const monthEleInRecord = document.querySelector('#records-portion #month-input')
 const table = document.querySelector('.records-table')
 const datalist = document.querySelector('#categories')
-const addEntry = document.querySelector('#add-entry-button input')
+const addButton = document.querySelector('#add-entry-button input')
 
 const expenseCategories = ["Food","Rent","Petrol","Gadgets","Groceries","others"]
 const incomeCategories = ["Salary","Free Lancing","interest","Rental","Profits","others"]
@@ -34,6 +34,8 @@ async function displaySummarySection (){
         monthEleInRecord.value = `${date.getFullYear()}-${date.getMonth()}`
         return
     }
+
+    month = month.toString().padStart(2,'0')
     
     let monthSummary = await fetch(`/get-month?year=${year}&month=${month}`).then((res)=> res.json())
 
@@ -168,7 +170,7 @@ async function editClick() {
     }
 
     cancelButton.style.display = 'block'
-    addEntry.value = 'update'
+    addButton.value = 'update'
 }
 
 async  function deleteButtonListeners() {
@@ -223,14 +225,14 @@ function optionsFill(options) {
     }
 }
 
-addEntry.addEventListener('click',processEntry)
+addButton.addEventListener('click',processEntry)
 
 categoryInput =document.querySelector('#category-input')
 amountInput =document.querySelector('#amount-input')
 dateInput =document.querySelector('#date-input')
 
 function clearInputs() {
-    addEntry.value = 'add entry'
+    addButton.value = 'add entry'
     categoryInput.value = ''
     amountInput.value = ''
     dateInput.value = ''
@@ -267,7 +269,7 @@ async function processEntry() {
         clearInputs()
         idForEdit = ''
         dateForEdit = ''
-        addEntry.value = 'add entry'
+        addButton.value = 'add entry'
         cancelButton.style.display = 'none'
         
         console.log(ack)
