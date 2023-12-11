@@ -6,6 +6,11 @@ const addEntry = document.querySelector('#add-entry-button input')
 const expenseCategories = ["Food","Rent","Petrol","Gadgets","Groceries","others"]
 const incomeCategories = ["Salary","Free Lancing","interest","Rental","Profits","others"]
 
+const cancelButton = document.querySelector('#cancel-button')
+
+let idForEdit = ''
+let dateForEdit = ''
+
 let categoryInput,amountInput,dateInput
 
 const summaryIncome = document.querySelector('.income-value')
@@ -13,15 +18,16 @@ const summaryExpense = document.querySelector('.expense-value')
 const summaryTally = document.querySelector('.tally-value')
 const summaryBalance = document.querySelector('.balance-value')
 
-summaryInputChange()
+displaySummarySection()
 optionsFill(incomeCategories)
 
-monthEleInRecord.addEventListener('change',summaryInputChange)
+monthEleInRecord.addEventListener('change',displaySummarySection)
 
 document.querySelector('#left-arrow').addEventListener('click',leftArrow)
 document.querySelector('#right-arrow').addEventListener('click',rightArrow)
 
-async function summaryInputChange (){
+async function displaySummarySection (){
+
     let [year,month] = yearMonthSplit(monthEleInRecord.value)
     if(!(yearValidate(year))) {
         let date = new Date()
@@ -30,18 +36,49 @@ async function summaryInputChange (){
     }
     
     let monthSummary = await fetch(`/get-month?year=${year}&month=${month}`).then((res)=> res.json())
+
     displayTable(monthSummary.monthData)
     displaySummary(monthSummary)
 }
 
 function displaySummary(monthSummary) {
-    let monthEx = monthSummary.monthData.ex
-    let monthIn = monthSummary.monthData.in
+    
+    let monthEx 
+    if(monthSummary.monthData && monthSummary.monthData.ex){
+            monthEx = monthSummary.monthData.ex
+    } else {
+        monthEx = 0
+    }
+
+    let monthIn 
+    if(monthSummary.monthData && monthSummary.monthData.in) {
+        monthIn = monthSummary.monthData.in
+    } else {
+        monthIn = 0
+    }
+
     let balance = monthSummary.in - monthSummary.ex
     
     summaryIncome.innerText = monthIn
     summaryExpense.innerText = monthEx
     summaryTally.innerText = monthIn - monthEx
+
+    if((monthIn-monthEx) < 0) {
+        summaryTally.style.color = 'red'
+    } else if((monthIn-monthEx) > 0) {
+        summaryTally.style.color = 'green'
+    } else {
+        summaryTally.style.color = 'black'
+    }
+
+    if(balance < 0) {
+        summaryBalance.style.color = 'red'
+    } else if(balance > 0) {
+        summaryBalance.style.color = 'green'
+    } else {
+        summaryBalance.style.color = 'black'
+    }
+
     summaryBalance.innerText = balance
 }
 
@@ -51,11 +88,12 @@ function displayTable(monthData) {
     <th>Category</th>
     <th>Amount</th>
     </tr>`
-
+    if(!(monthData)) {
+        return
+    }
     let ids = Object.keys(monthData).filter((id) => {
         return (id != "ex" && id != "in")
     })
-    console.log(ids)
     ids = ids.sort((a,b) => {
 
         if(monthData[a].date === monthData[b].date) {
@@ -74,7 +112,6 @@ function displayTable(monthData) {
                 }
             }
         }
-        console.log(a,monthData[a].date,b,monthData[b].date)
         let date1 = new Date(monthData[a].date)
         let date2 = new Date(monthData[b].date)
 
@@ -101,33 +138,38 @@ function displayTable(monthData) {
         <td>RS ${monthData[id].amount}</td>
       </tr>`
     }
-    // editButtonListeners()
+    editButtonListeners()
     deleteButtonListeners()
 }
 
-// function editButtonListeners() {
-//     let editButtons = document.querySelectorAll('.edit')
-//     editButtons.forEach((button) => {
-//         button.addEventListener('click',editClick)
-//     });
-// }
+function editButtonListeners() {
+    let editButtons = document.querySelectorAll('.edit')
+    editButtons.forEach((button) => {
+        button.addEventListener('click',editClick)
+    });
+}
 
-// async function editClick() {
-//     let udi = this.parentNode.parentNode.parentNode.id
-//     let body = {
-//         id: udi
-//     }
+async function editClick() {
+    idForEdit = this.parentNode.parentNode.parentNode.id
+    dateForEdit = this.nextElementSibling.nextElementSibling.innerHTML
+    
+    let [date,month,year] = dateForEdit.split('-')
+    dateInput.value = `${year}-${month}-${date}`
+    dateForEdit = dateInput.value
 
-//     let ack = await fetch('/edit', {
-//         method: 'post',
-//         headers: {
-//             "content-type":'application/json'
-//         },
-//         body : JSON.stringify(body)
-//     }).then((res)=> res.json())
+    categoryInput.value = this.parentNode.parentNode.nextElementSibling.innerText
 
-//     console.log(ack)
-// }
+    amountInput.value = this.parentNode.parentNode.nextElementSibling.nextElementSibling.innerText.split(' ')[1]
+
+    if(this.parentNode.parentNode.parentNode.classList.contains('ex')) {
+        radioExpense.checked = true
+    } else {
+        radioIncome.checked = true
+    }
+
+    cancelButton.style.display = 'block'
+    addEntry.value = 'update'
+}
 
 async  function deleteButtonListeners() {
     let deleteButtons = document.querySelectorAll('.delete')
@@ -155,7 +197,94 @@ async function deleteClick() {
     }).then((res)=> res.json())
 
     console.log(ack)
-    summaryInputChange()
+    displaySummarySection()
+}
+
+const radioIncome = document.querySelector('#income-option')
+const radioExpense = document.querySelector('#expense-option')
+
+
+radioIncome.addEventListener('click',changeOnRadioClick)
+radioExpense.addEventListener('click',changeOnRadioClick)
+
+function changeOnRadioClick() {
+    if (radioIncome.checked) {
+        optionsFill(incomeCategories)
+    } else if(radioExpense.checked) {
+        optionsFill(expenseCategories)
+    }
+    categoryInput.value =''
+}
+
+function optionsFill(options) {
+    datalist.innerHTML = ''
+    for (let category of options) {
+        datalist.innerHTML += `<option value="${category}"></option>`
+    }
+}
+
+addEntry.addEventListener('click',processEntry)
+
+categoryInput =document.querySelector('#category-input')
+amountInput =document.querySelector('#amount-input')
+dateInput =document.querySelector('#date-input')
+
+function clearInputs() {
+    addEntry.value = 'add entry'
+    categoryInput.value = ''
+    amountInput.value = ''
+    dateInput.value = ''
+    radioIncome.checked = true
+    changeOnRadioClick()
+}
+
+async function processEntry() {
+    if(!(categoryInput.value && amountInput.value && dateInput.value)) {
+        alert('fill all fields')
+        return
+    }
+    let entryType = radioExpense.checked ? radioExpense.value : radioIncome.value
+
+    let reqBody = {}
+    reqBody.amount = parseInt(amountInput.value)
+    reqBody.category = categoryInput.value
+    reqBody.date = dateInput.value
+    reqBody.entryType = entryType
+    
+    if (this.value === 'update') {
+        console.log('updating')
+        reqBody.id = idForEdit
+        reqBody.prevDate = dateForEdit
+        console.log(reqBody)
+        let ack = await fetch('/update',{
+            method: 'post',
+            headers: {
+                "content-type" : 'application/json'
+            },
+            body : JSON.stringify(reqBody)
+        }).then((res)=> res.json())
+
+        clearInputs()
+        idForEdit = ''
+        dateForEdit = ''
+        addEntry.value = 'add entry'
+        cancelButton.style.display = 'none'
+        
+        console.log(ack)
+        displaySummarySection()
+        return
+    }
+
+    let uid = await fetch('/add-entry', {
+        method: 'post',
+        headers: {
+            "content-type":'application/json'
+        },
+        body : JSON.stringify(reqBody)
+    }).then((res)=> res.json())
+
+    clearInputs()
+    displaySummarySection()
 }
 
 function leftArrow() {
@@ -172,7 +301,7 @@ function leftArrow() {
     }
 
     monthEleInRecord.value = `${year}-${month.toString().padStart(2,'0')}`
-    summaryInputChange()
+    displaySummarySection()
 }
 
 function rightArrow() {
@@ -189,7 +318,7 @@ function rightArrow() {
     }
 
     monthEleInRecord.value = `${year}-${month.toString().padStart(2,'0')}`
-    summaryInputChange()
+    displaySummarySection()
 }
 
 function yearValidate(year) {
@@ -206,57 +335,3 @@ function yearMonthSplit(yearMonthText) {
     return [year,month]
 }
 
-
-const radioIncome = document.querySelector('#income-option')
-const radioExpense = document.querySelector('#expense-option')
-
-
-radioIncome.addEventListener('click',changeOnRadioClick)
-radioExpense.addEventListener('click',changeOnRadioClick)
-
-function changeOnRadioClick() {
-    if (radioIncome.checked) {
-        optionsFill(incomeCategories)
-    } else if(radioExpense.checked) {
-        optionsFill(expenseCategories)
-    }
-}
-
-function optionsFill(options) {
-    datalist.innerHTML = ''
-    for (let category of options) {
-        datalist.innerHTML += `<option value="${category}"></option>`
-    }
-}
-
-addEntry.addEventListener('click',processEntry)
-
-categoryInput =document.querySelector('#category-input')
-amountInput =document.querySelector('#amount-input')
-dateInput =document.querySelector('#date-input')
-
-async function processEntry() {
-    if(!(categoryInput.value && amountInput.value && dateInput.value)) {
-        alert('fill all fields')
-        return
-    }
-    let entryType = radioExpense.checked ? radioExpense.value : radioIncome.value
-    alert(entryType)
-
-    let reqBody = {}
-    reqBody.amount = parseInt(amountInput.value)
-    reqBody.category = categoryInput.value
-    reqBody.date = dateInput.value
-    reqBody.entryType = entryType
-    
-
-    let uid = await fetch('/add-entry', {
-        method: 'post',
-        headers: {
-            "content-type":'application/json'
-        },
-        body : JSON.stringify(reqBody)
-    }).then((res)=> res.json())
-
-    summaryInputChange()
-}

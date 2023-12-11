@@ -113,6 +113,14 @@ tbody:nth-child(odd) {
 }
 
 #add-entry-button {
-    justify-content: center;
+    display: flex;
+    justify-content: space-around;
 }
 
+#add-entry-button input{
+    width: 40%;
+}
+
+#cancel-button {
+    display: none;
+}
