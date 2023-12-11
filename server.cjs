@@ -16,10 +16,11 @@ app.get('/get-month',(req,res) => {
     let body = {}
     if(dataBase[query.year]) {
         if(dataBase[query.year][query.month]) {
-            body = dataBase[query.year][query.month]
+            body.monthData = dataBase[query.year][query.month]
         }
     }
-    body.
+    body.ex = dataBase.ex
+    body.in = dataBase.in
     console.log(body)
     res.status(200).json(body)
 })
@@ -48,20 +49,20 @@ app.post('/add-entry',(req,res)=> {
 
     if (fields.entryType === 'ex') {
         if(dataBase[year][month]["ex"]) {
-            dataBase[year][month]["ex"] = dataBase[year][month]["ex"] + fields.amount 
+            dataBase[year][month]["ex"] += fields.amount 
         } else {
             dataBase[year][month]["ex"] = fields.amount
         }
-        dataBase["ex"] = dataBase["ex"] + fields.amount
+        dataBase["ex"] += fields.amount
     }
 
     if (fields.entryType === 'in') {
         if(dataBase[year][month]["in"]) {
-            dataBase[year][month]["in"] = dataBase[year][month]["in"] + fields.amount 
+            dataBase[year][month]["in"] += fields.amount 
         } else {
             dataBase[year][month]["in"] = fields.amount
         }
-        dataBase["in"] = dataBase["in"] + fields.amount
+        dataBase["in"] += fields.amount
     }
 
     console.log(dataBase)
@@ -78,7 +79,18 @@ app.post('/add-entry',(req,res)=> {
 
 app.post('/delete',(req,res)=> {
     let reqBody = req.body
+    let amount = dataBase[reqBody.year][reqBody.month][reqBody.id].amount
+    if (dataBase[reqBody.year][reqBody.month][reqBody.id].entryType === 'in') {
+
+        dataBase[reqBody.year][reqBody.month].in -= amount
+        dataBase.in -= amount
+    } else {
+        dataBase[reqBody.year][reqBody.month].ex -= amount
+        dataBase.ex -= amount
+    }
+
     delete dataBase[reqBody.year][reqBody.month][reqBody.id]
+
     fs.writeFileSync('./data.json',JSON.stringify(dataBase),(err) => {
         if(err){
             console.log(err)

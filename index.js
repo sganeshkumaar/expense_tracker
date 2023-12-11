@@ -8,6 +8,10 @@ const incomeCategories = ["Salary","Free Lancing","interest","Rental","Profits",
 
 let categoryInput,amountInput,dateInput
 
+const summaryIncome = document.querySelector('.income-value')
+const summaryExpense = document.querySelector('.expense-value')
+const summaryTally = document.querySelector('.tally-value')
+const summaryBalance = document.querySelector('.balance-value')
 
 summaryInputChange()
 optionsFill(incomeCategories)
@@ -26,7 +30,19 @@ async function summaryInputChange (){
     }
     
     let monthSummary = await fetch(`/get-month?year=${year}&month=${month}`).then((res)=> res.json())
-    displayTable(monthData)
+    displayTable(monthSummary.monthData)
+    displaySummary(monthSummary)
+}
+
+function displaySummary(monthSummary) {
+    let monthEx = monthSummary.monthData.ex
+    let monthIn = monthSummary.monthData.in
+    let balance = monthSummary.in - monthSummary.ex
+    
+    summaryIncome.innerText = monthIn
+    summaryExpense.innerText = monthEx
+    summaryTally.innerText = monthIn - monthEx
+    summaryBalance.innerText = balance
 }
 
 function displayTable(monthData) {
@@ -69,10 +85,9 @@ function displayTable(monthData) {
         }
         return 0
     })
+
     for (let id of ids) {
-        if(id === "ex" || id === "in") {
-            continue
-        }
+
         let date = monthData[id].date.split('-')
         table.innerHTML+= `<tr id='${id}' class='${monthData[id].entryType}'>
         <td >
