@@ -1,4 +1,4 @@
-import {validateAmount,yearValidate,validateCategory,validateFields,validateEntryDate,incomeCategories,expenseCategories} from './validate.js'
+import {validateAmount,yearMonthValidate,validateCategory,validateFields,validateEntryDate,incomeCategories,expenseCategories} from './validate.js'
 
 
 const monthsInRecord = document.querySelector('#records-portion #month-input')
@@ -38,7 +38,9 @@ document.querySelector('#right-arrow').addEventListener('click',rightArrow)
 async function displaySummarySection () {
 
     let [year,month] = yearMonthSplit(monthsInRecord.value)
-    if(!(yearValidate(year))) {
+    month = parseInt(month)
+    
+    if(!(yearMonthValidate(year,month))) {
         let date = new Date()
         monthsInRecord.value = `${date.getFullYear()}-${date.getMonth()+1}`
         return
@@ -182,7 +184,7 @@ async function editClick() {
     addButton.value = 'update'
 }
 
-async  function deleteButtonListeners() {
+async function deleteButtonListeners() {
     let deleteButtons = document.querySelectorAll('.delete')
     deleteButtons.forEach((button) => {
         button.addEventListener('click',deleteClick)
