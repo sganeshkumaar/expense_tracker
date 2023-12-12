@@ -1,12 +1,12 @@
+import {validateAmount,yearValidate,validateCategory,validateFields,validateEntryDate,incomeCategories,expenseCategories} from './validate.js'
+
+
 const monthsInRecord = document.querySelector('#records-portion #month-input')
 const table = document.querySelector('.records-table')
 const datalist = document.querySelector('#categories')
-const addButton = document.querySelector('#add-entry-button input')
+const addButton = document.querySelector('.add-button')
 
-const expenseCategories = ["Food","Rent","Petrol","Gadgets","Groceries","others"]
-const incomeCategories = ["Salary","Free Lancing","interest","Rental","Profits","others"]
-
-const cancelButton = document.querySelector('#cancel-button')
+const cancelButton = document.querySelector('.cancel-button')
 
 let idForEdit = ''
 let dateForEdit = ''
@@ -18,7 +18,16 @@ const summaryExpense = document.querySelector('.expense-value')
 const summaryTally = document.querySelector('.tally-value')
 const summaryBalance = document.querySelector('.balance-value')
 
+const incomeSection = document.querySelector('.income-section')
+const expenseSection = document.querySelector('.expense-section')
+
+const generalMetricSection = document.querySelector('.general-metric')
+
+const fromInput = document.querySelector('#from-month')
+const toInput = document.querySelector('#to-month')
+
 displaySummarySection()
+requestAnalytics()
 optionsFill(incomeCategories)
 
 monthsInRecord.addEventListener('change',displaySummarySection)
@@ -26,12 +35,12 @@ monthsInRecord.addEventListener('change',displaySummarySection)
 document.querySelector('#left-arrow').addEventListener('click',leftArrow)
 document.querySelector('#right-arrow').addEventListener('click',rightArrow)
 
-async function displaySummarySection (){
+async function displaySummarySection () {
 
     let [year,month] = yearMonthSplit(monthsInRecord.value)
     if(!(yearValidate(year))) {
         let date = new Date()
-        monthsInRecord.value = `${date.getFullYear()}-${date.getMonth()}`
+        monthsInRecord.value = `${date.getFullYear()}-${date.getMonth()+1}`
         return
     }
 
@@ -137,7 +146,7 @@ function displayTable(monthData) {
           </div>
         </td>
         <td>${monthData[id].category}</td>
-        <td>RS ${monthData[id].amount}</td>
+        <td>Rs. ${monthData[id].amount}</td>
       </tr>`
     }
     editButtonListeners()
@@ -169,7 +178,7 @@ async function editClick() {
         radioIncome.checked = true
     }
 
-    cancelButton.style.display = 'block'
+    cancelButton.classList.remove('none')
     addButton.value = 'update'
 }
 
@@ -200,6 +209,7 @@ async function deleteClick() {
 
     console.log(ack)
     displaySummarySection()
+    requestAnalytics()
 }
 
 const radioIncome = document.querySelector('#income-option')
@@ -241,11 +251,27 @@ function clearInputs() {
 }
 
 async function processEntry() {
-    if(!(categoryInput.value && amountInput.value && dateInput.value)) {
+    if(!validateFields(categoryInput.value,amountInput.value,dateInput.value)) {
         alert('fill all fields')
         return
     }
+
     let entryType = radioExpense.checked ? radioExpense.value : radioIncome.value
+
+    if(!validateCategory(entryType,categoryInput.value)) {
+        alert('choose category from given options')
+        return
+    }
+
+    if(!validateEntryDate(dateInput.value)) {
+        alert('choose a date today or before')
+        return
+    }
+
+    if(!validateAmount(amountInput.value)) {
+        alert('enter positive input')
+        return
+    }
 
     let reqBody = {}
     reqBody.amount = parseInt(amountInput.value)
@@ -270,10 +296,11 @@ async function processEntry() {
         idForEdit = ''
         dateForEdit = ''
         addButton.value = 'add entry'
-        cancelButton.style.display = 'none'
+        cancelButton.classList.add('none')
         
         console.log(ack)
         displaySummarySection()
+        requestAnalytics()
         return
     }
 
@@ -287,11 +314,12 @@ async function processEntry() {
 
     clearInputs()
     displaySummarySection()
+    requestAnalytics()
 }
 
 function leftArrow() {
     let [year,month]= yearMonthSplit(monthsInRecord.value)
-    if (year === 2023 && month === 1) {
+    if (year === 2020 && month === 1) {
         return
     }
 
@@ -308,7 +336,8 @@ function leftArrow() {
 
 function rightArrow() {
     let [year,month]= yearMonthSplit(monthsInRecord.value)
-    if (year === 2030 && month === 12) {
+    let date = new Date()
+    if (year === parseInt(date.getFullYear()) && month === parseInt(date.getMonth()+1)) {
         return
     }
 
@@ -323,12 +352,6 @@ function rightArrow() {
     displaySummarySection()
 }
 
-function yearValidate(year) {
-    if(year < 2023 || year > 2030) {
-        return false
-    }
-    return true
-}
 
 function yearMonthSplit(yearMonthText) {
     let [year,month]= yearMonthText.split('-')
@@ -337,16 +360,32 @@ function yearMonthSplit(yearMonthText) {
     return [year,month]
 }
 
-document.querySelector('#get-button').addEventListener('click', requestAnalytics)
+document.querySelector('.get-button').addEventListener('click', requestAnalytics)
 
-const incomeSection = document.querySelector('.income-section')
-const expenseSection = document.querySelector('.expense-section')
 
-const generalMetricSection = document.querySelector('.general-metric')
+
+fromInput.addEventListener('change',processAnalyticMonth)
+toInput.addEventListener('change',processAnalyticMonth)
+
+console.log(fromInput,toInput)
+
+function processAnalyticMonth() {
+    let date = new Date()
+    
+    let currentMonth = `${date.getFullYear()}-${date.getMonth()+1}`
+    if(this.value > currentMonth) {
+        this.value = currentMonth
+    } else if(this.value < '2020-01') {
+        this.value = '2020-01'
+    }
+    return 
+}
+
+
 
 async function requestAnalytics() {
-    let fromMonth = document.querySelector('#from-month').value
-    let toMonth = document.querySelector('#to-month').value
+    let fromMonth = fromInput.value
+    let toMonth = toInput.value
     if (fromMonth > toMonth) {
         alert('give appropriate from and to months')
         return
@@ -441,6 +480,14 @@ async function requestAnalytics() {
 
         expenseSection.querySelector(`.${category.replace(/\s/g, '').toLowerCase()}-per`).innerHTML = parseInt(percentage)
     }
+}
+
+cancelButton.addEventListener('click',cancelEntry) 
+
+function cancelEntry() { 
+    clearInputs()
+    cancelButton.classList.add('none')
+    addButton.value = 'Add Entry'
 }
 
 

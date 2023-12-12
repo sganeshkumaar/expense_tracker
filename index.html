@@ -40,7 +40,7 @@
             <br>
             <div class="month-input-box">
                 <img src="./assets/scrollArrowLeft.svg" alt="" id="left-arrow">
-                <input type="month" name="month-input" id="month-input" value="2023-12"  max="2030-12">
+                <input type="month" name="month-input" id="month-input" value="2023-12" min-val="2020-01">
                 <img src="./assets/scrollArrowRight.svg" alt="" id="right-arrow">
             </div>
             <br>
@@ -59,10 +59,10 @@
     <div id="analytics-portion">
         <div style="text-align: center;margin-top: 1rem;"><h2>ANALYTICS</h2></div>
         <div class="input-section">
-            <input type="month" id="from-month" value="2023-12" max="2030-12">
-            <input type="month" id="to-month" value="2023-12" max="2030-12">
-            <div class="get-analytics"><button type="button" id="get-button">GET</button></div>
+            <div class="from-month-box">From:<input type="month" id="from-month" value="2023-12" min="2020-1"></div>
+            <div class="to-month-box">To: <input type="month" id="to-month" value="2023-12" max="2020-1"></div>
         </div>
+        <div class="get-analytics"><button type="button" class="get-button">GET</button></div>
         <div class="analysis">
             <div><h3>General metrics</h3></div>
             <div class="general-metric">
@@ -82,43 +82,43 @@
             <h3>INCOMES</h3>
             <div class="income-section">
                 <div>
-                    Salary: Rs.<span class="salary"></span> ( <span class="salary-per"></span>% )
+                    Salary: Rs. <span class="salary"></span> ( <span class="salary-per"></span>% )
                 </div>
                 <div>
-                    Free lancing: Rs.<span class="freelancing"></span> ( <span class="freelancing-per"></span>% )
+                    Free lancing: Rs. <span class="freelancing"></span> ( <span class="freelancing-per"></span>% )
                 </div>
                 <div>
-                    Interest: Rs.<span class="interest"></span> ( <span class="interest-per"></span>% )
+                    Interest: Rs. <span class="interest"></span> ( <span class="interest-per"></span>% )
                 </div>
                 <div>
-                    Rental: Rs.<span class="rental"></span> ( <span class="rental-per"></span>% )
+                    Rental: Rs. <span class="rental"></span> ( <span class="rental-per"></span>% )
                 </div>
                 <div>
-                    Profits: Rs.<span class="profits"></span> ( <span class="profits-per"></span>% )
+                    Profits: Rs. <span class="profits"></span> ( <span class="profits-per"></span>% )
                 </div>
                 <div>
-                    Others: Rs.<span class="others"></span> ( <span class="others-per"></span>% )
+                    Others: Rs. <span class="others"></span> ( <span class="others-per"></span>% )
                 </div>
             </div>
             <h3>Expenses</h3>
             <div class="expense-section">
                 <div>
-                    Food: Rs.<span class="food"></span> ( <span class="food-per"></span>% )
+                    Food: Rs. <span class="food"></span> ( <span class="food-per"></span>% )
                 </div>
                 <div>
-                    Rent: Rs.<span class="rent"></span> ( <span class="rent-per"></span>% )
+                    Rent: Rs. <span class="rent"></span> ( <span class="rent-per"></span>% )
                 </div>
                 <div>
-                    Petrol: Rs.<span class="petrol"></span> ( <span class="petrol-per"></span>% )
+                    Petrol: Rs. <span class="petrol"></span> ( <span class="petrol-per"></span>% )
                 </div>
                 <div>
-                    Gadgets: Rs.<span class="gadgets"></span> ( <span class="gadgets-per"></span>% )
+                    Gadgets: Rs. <span class="gadgets"></span> ( <span class="gadgets-per"></span>% )
                 </div>
                 <div>
-                    Groceries: Rs.<span class="groceries"></span> ( <span class="groceries-per"></span>% )
+                    Groceries: Rs. <span class="groceries"></span> ( <span class="groceries-per"></span>% )
                 </div>
                 <div>
-                    Others: Rs.<span class="others"></span> ( <span class="others-per"></span>% )
+                    Others: Rs. <span class="others"></span> ( <span class="others-per"></span>% )
                 </div>
             </div>
         </div>
@@ -138,26 +138,26 @@
                     <label for="expense-option">Expense</label>
                 </div>
             </div>
-            <div class="category-input-box">
+            <div class="category-input-box entry-row">
                 <label for="category-input">Category:</label>
-                <input list="categories" name="categories" id="category-input" spellcheck="false" value="">
+                <input list="categories" name="categories" id="category-input" spellcheck="false" value="" class="input-field">
                 <datalist id="categories">
                 </datalist>
             </div>
-            <div class="amount-input-box">
+            <div class="amount-input-box entry-row">
                 <label for="amount-input">Amount:</label>
-                <input type="number" name="" id="amount-input" min="1" max="1000000000">
+                <input type="number" name="" id="amount-input" min="1" max="1000000000" class="input-field">
             </div>
-            <div class="date-input-box">
+            <div class="date-input-box entry-row">
                 <label for="date-input">Date:</label>
-                <input type="date" name="" id="date-input">
+                <input type="date" name="" id="date-input" class="input-field">
             </div>
-            <div id="add-entry-button">
-                <input type="button" value="add entry">
-                <input type="button" value="cancel" id="cancel-button">
+            <div class="entry-buttons">
+                <input type="button" value="Add Entry" class="add-button">
+                <input type="button" value="cancel" class="cancel-button none">
             </div>
         </div>
     </div>
-    <script src="./index.js" type="module"></script>
+    <script src="js/index.js" type="module"></script>
 </body>
 </html>
