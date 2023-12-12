@@ -12,6 +12,12 @@ export function validateAmount(amount) {
     return true
 }
 
+/**
+ * to validate that the given month is within the intended period
+ * @param {number} year given year input
+ * @param {number} month given month input
+ * @returns {boolean}
+ */
 export function yearMonthValidate(year, month) {
     let date = new Date()
 
@@ -26,6 +32,12 @@ export function yearMonthValidate(year, month) {
     return true
 }
 
+/**
+ * to validate the input category is in a pre-listed set of categories
+ * @param {String} entryType type of entry
+ * @param {String} category  category of entry
+ * @returns {Boolean}
+ */
 export function validateCategory(entryType, category) {
     if(entryType === 'ex') {
         if(expenseCategories.includes(category)) {
@@ -39,6 +51,13 @@ export function validateCategory(entryType, category) {
     return false
 }
 
+/**
+ * to validate all the fields are fill with data
+ * @param {String} category category of entry
+ * @param {number} amount entered amount
+ * @param {String} date date of entry 
+ * @returns {Boolean}
+ */
 export function validateFields(category,amount,date) {
     if(category && amount && date) {
         return true
@@ -46,6 +65,11 @@ export function validateFields(category,amount,date) {
     return false
 }
 
+/**
+ * to validate the entry date is in the intended time period
+ * @param {String} date date of entry 
+ * @returns 
+ */
 export function validateEntryDate(date) {
     let entryDate = new Date(date)
     let today = new Date()
