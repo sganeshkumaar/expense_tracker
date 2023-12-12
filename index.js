@@ -1,4 +1,4 @@
-const monthEleInRecord = document.querySelector('#records-portion #month-input')
+const monthsInRecord = document.querySelector('#records-portion #month-input')
 const table = document.querySelector('.records-table')
 const datalist = document.querySelector('#categories')
 const addButton = document.querySelector('#add-entry-button input')
@@ -21,17 +21,17 @@ const summaryBalance = document.querySelector('.balance-value')
 displaySummarySection()
 optionsFill(incomeCategories)
 
-monthEleInRecord.addEventListener('change',displaySummarySection)
+monthsInRecord.addEventListener('change',displaySummarySection)
 
 document.querySelector('#left-arrow').addEventListener('click',leftArrow)
 document.querySelector('#right-arrow').addEventListener('click',rightArrow)
 
 async function displaySummarySection (){
 
-    let [year,month] = yearMonthSplit(monthEleInRecord.value)
+    let [year,month] = yearMonthSplit(monthsInRecord.value)
     if(!(yearValidate(year))) {
         let date = new Date()
-        monthEleInRecord.value = `${date.getFullYear()}-${date.getMonth()}`
+        monthsInRecord.value = `${date.getFullYear()}-${date.getMonth()}`
         return
     }
 
@@ -290,7 +290,7 @@ async function processEntry() {
 }
 
 function leftArrow() {
-    let [year,month]= yearMonthSplit(monthEleInRecord.value)
+    let [year,month]= yearMonthSplit(monthsInRecord.value)
     if (year === 2023 && month === 1) {
         return
     }
@@ -302,12 +302,12 @@ function leftArrow() {
         month -= 1
     }
 
-    monthEleInRecord.value = `${year}-${month.toString().padStart(2,'0')}`
+    monthsInRecord.value = `${year}-${month.toString().padStart(2,'0')}`
     displaySummarySection()
 }
 
 function rightArrow() {
-    let [year,month]= yearMonthSplit(monthEleInRecord.value)
+    let [year,month]= yearMonthSplit(monthsInRecord.value)
     if (year === 2030 && month === 12) {
         return
     }
@@ -319,7 +319,7 @@ function rightArrow() {
         month += 1
     }
 
-    monthEleInRecord.value = `${year}-${month.toString().padStart(2,'0')}`
+    monthsInRecord.value = `${year}-${month.toString().padStart(2,'0')}`
     displaySummarySection()
 }
 
@@ -352,7 +352,7 @@ async function requestAnalytics() {
     reqBody.fromMonth = fromMonth
     reqBody.toMonth = toMonth
 
-    let ack = await fetch('/analysis', {
+    let monthsData = await fetch('/analysis', {
         method: 'post',
         headers: {
             "content-type":'application/json'
@@ -360,6 +360,11 @@ async function requestAnalytics() {
         body : JSON.stringify(reqBody)
     }).then((res)=> res.json())
 
-    console.log(ack)
+    let monthsArray = monthsData.array.filter((month) => {
+        return !( (!(month.in) || month.in ===0) && (!(month.ex) || month.ex ===0))
+    })
+    
+    let expense = 0
+    let 
 }
 
