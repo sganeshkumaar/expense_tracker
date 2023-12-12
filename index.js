@@ -339,6 +339,11 @@ function yearMonthSplit(yearMonthText) {
 
 document.querySelector('#get-button').addEventListener('click', requestAnalytics)
 
+const incomeSection = document.querySelector('.income-section')
+const expenseSection = document.querySelector('.expense-section')
+
+const generalMetricSection = document.querySelector('.general-metric')
+
 async function requestAnalytics() {
     let fromMonth = document.querySelector('#from-month').value
     let toMonth = document.querySelector('#to-month').value
@@ -365,6 +370,78 @@ async function requestAnalytics() {
     })
     
     let expense = 0
-    let 
+    let income = 0
+    let expenseCategoryAmount  = { }
+    let incomeCategoryAmount = { }
+
+    for (let category of incomeCategories) {
+        incomeCategoryAmount[category] = 0
+    }
+
+    for (let category of expenseCategories) {
+        expenseCategoryAmount[category] = 0
+    }
+
+    for(let month of monthsArray) {
+        let entryIds = Object.keys(month).filter((id) => {
+            return (id != "ex" && id != "in")
+        })
+
+        if(month.in) {
+            income += month.in
+        }
+
+        if(month.ex) {
+            expense += month.ex
+        }
+
+        for(let id of entryIds) {
+            if(month[id].entryType === 'in') {
+                incomeCategoryAmount[month[id].category] += month[id].amount
+            } else {
+                expenseCategoryAmount[month[id].category] += month[id].amount
+            }
+        }
+    }
+
+    generalMetricSection.querySelector('.income-value').innerHTML = `${income}`
+    generalMetricSection.querySelector('.expense-value').innerHTML = `${expense}`
+    generalMetricSection.querySelector('.tally-value').innerHTML = `${income-expense}`
+
+    if( income-expense < 0) {
+        generalMetricSection.querySelector('.tally-value').style.color = `red`
+    } else if(income-expense > 0) {
+        generalMetricSection.querySelector('.tally-value').style.color = `green`
+    }
+
+    for(let category of incomeCategories) {
+        incomeSection.querySelector(`.${category.replace(/\s/g, '').toLowerCase()}`).innerHTML = incomeCategoryAmount[category]
+
+        let percentage
+
+        if(income === 0) {
+            percentage = 0
+        } else {
+            percentage =(incomeCategoryAmount[category]/income) * 100
+        }
+
+        incomeSection.querySelector(`.${category.replace(/\s/g, '').toLowerCase()}-per`).innerHTML = parseInt(percentage)
+    }
+
+    for(let category of expenseCategories) {
+        expenseSection.querySelector(`.${category.replace(/\s/g, '').toLowerCase()}`).innerHTML = expenseCategoryAmount[category]
+
+        let percentage
+
+        if(expense === 0) {
+            percentage = 0
+        } else {
+            percentage =(expenseCategoryAmount[category]/expense) * 100
+        }
+
+        expenseSection.querySelector(`.${category.replace(/\s/g, '').toLowerCase()}-per`).innerHTML = parseInt(percentage)
+    }
 }
 
+
+requestAnalytics()

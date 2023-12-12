@@ -175,12 +175,12 @@ tr td:nth-of-type(2) {
     width:20%;
 }
 
-.income-metrics {
+.income-section {
     display: flex;
     flex-wrap: wrap;
 }
 
-.income-metrics > div {
+.income-section > div {
     width: fit-content;
     margin-left: .8rem;
     justify-content: space-between;
@@ -191,12 +191,12 @@ tr td:nth-of-type(2) {
     overflow-y: scroll;
 }
 
-.expense-metrics {
+.expense-section {
     display: flex;
     flex-wrap: wrap;
 }
 
-.expense-metrics > div {
+.expense-section > div {
     width: fit-content;
     margin-left: .8rem;
     justify-content: space-between;
