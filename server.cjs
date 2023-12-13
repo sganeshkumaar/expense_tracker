@@ -146,5 +146,46 @@ app.post('/update', (req,res) => {
 })
 
 
+app.post('/analysis',(req,res) => {
+    const query = req.body
+
+    let monthsArray = []
+
+    let [year,month] = query.fromMonth.split('-')
+    let [toYear,toMonth] = query.toMonth.split('-')
+
+    year = parseInt(year)
+    month = parseInt(month)
+    toYear = parseInt(toYear)
+    toMonth = parseInt(toMonth)
+
+    while (true) {
+        if(dataBase[year]) {
+            if(dataBase[year][month.toString().padStart(2,'0')]) {
+                monthsArray.push(dataBase[year][month.toString().padStart(2,'0')])
+            }
+        }
+
+        if(month === toMonth && year === toYear ) {
+            break
+        }
+
+        if(month === 12) {
+            year += 1
+            month = 1
+        } else {
+            month +=1
+        }
+    }
+
+    console.log(monthsArray)
+    let response = {}
+    response.array = monthsArray
+
+
+    res.status(200).json(response)
+})
+
+
 
 app.listen(port,() => console.log(`server running in ${port}`))
