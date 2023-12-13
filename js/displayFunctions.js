@@ -58,6 +58,40 @@ export function displaySummary(monthSummary) {
 }
 
 /**
+ * 
+ * @param {String} a id of first entry 
+ * @param {String} b if of second entry 
+ * @param {Object} monthData object containing all the entries of the month 
+ * @returns {number} whether to be sorted before or after 
+ */
+function entriesSorting(a,b,monthData) {
+    if(monthData[a].date === monthData[b].date) {
+        if(monthData[a].entryType === monthData[b].entryType) {
+            if(monthData[a].amount < monthData[b].amount) {
+                return -1
+            } else {
+                return 1
+            }
+        } else {
+            if(monthData[a].entryType === "in" && monthData[b].entryType === "ex") {
+                return -1
+            } else {
+                return 1
+            }
+        }
+    }
+    let date1 = new Date(monthData[a].date)
+    let date2 = new Date(monthData[b].date)
+
+    if(date1 > date2) {
+        return 1
+    } else if(date1 < date2) {
+        return -1
+    }
+    return 0
+}
+
+/**
  * Fill the entries table
  * @param {Object} monthData month data entries as an object
  */
@@ -74,32 +108,7 @@ export function displayTable(monthData) {
         return (id != "ex" && id != "in")
     })
     ids = ids.sort((a,b) => {
-
-        if(monthData[a].date === monthData[b].date) {
-            console.log('same date')
-            if(monthData[a].entryType === monthData[b].entryType) {
-                if(monthData[a].amount < monthData[b].amount) {
-                    return -1
-                } else {
-                    return 1
-                }
-            } else {
-                if(monthData[a].entryType === "in" && monthData[b].entryType === "ex") {
-                    return -1
-                } else {
-                    return 1
-                }
-            }
-        }
-        let date1 = new Date(monthData[a].date)
-        let date2 = new Date(monthData[b].date)
-
-        if(date1 > date2) {
-            return 1
-        } else if(date1 < date2) {
-            return -1
-        }
-        return 0
+        return entriesSorting(a,b,monthData)
     })
 
     for (let id of ids) {
